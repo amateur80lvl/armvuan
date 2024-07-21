@@ -39,11 +39,12 @@ FLAVOR_EXCLUDE=sysvinit-core
 
 # notes:
 # * apt-utils, dialog are needed to avoid debconf errors
+# * bc is needed by armbianmonitor
 # * initramfs-tools is needed to properly install linux-image later on
 # * procps is needed because it provides /etc/sysctl.conf
 # * udev is needed, otherwise Armbian's udev wil be installed,
 #   it's a transitional package in Devuan, but eudev is explicitly specified just in case
-REQUIRED_PACKAGES=apt-utils,console-setup,cron,dialog,fping,initramfs-tools-core,initramfs-tools,\
+REQUIRED_PACKAGES=apt-utils,bc,console-setup,cron,dialog,fping,initramfs-tools-core,initramfs-tools,\
 iw,libc-l10n,locales,lsb-release,netbase,procps,tzdata,udev,eudev,u-boot-tools,zstd
 
 DISTRO_INCLUDE=bsdextrautils,cpufrequtils,chrony,dosfstools,ethtool,fdisk,findutils,less,ifupdown,\
@@ -464,7 +465,6 @@ function armvuan_blend() {
 
 	do_with_retries 3 chroot_sdcard_apt_get_install \
 		armbian-firmware \
-		armbian-bsp-cli-${BOARD}-${BRANCH} \
 		linux-dtb-${BRANCH}-${LINUXFAMILY} \
 		linux-image-${BRANCH}-${LINUXFAMILY} \
 		linux-u-boot-${BOARD}-${BRANCH}
@@ -478,7 +478,17 @@ function armvuan_blend() {
 
 function armvuan_final_tweaks() {
 
-	# sans systemctl version
+	# Pull stuff from armbian-bsp-cli package
+	BSP=armbian-bsp-cli-${BOARD}-${BRANCH}
+	chroot_sdcard_apt_get download ${BSP}
+	chroot_sdcard mkdir /root/${BSP}
+	chroot_sdcard dpkg-deb -R ${BSP}*.deb /root/${BSP}
+	chroot_sdcard cp -a /root/${BSP}/etc/{apt,armbian-release,initramfs,kernel,modprobe.d,sysfs.d,udev} /etc/
+	chroot_sdcard cp /root/${BSP}/etc/default/armbian-ramlog.dpkg-dist /etc/default/armbian-ramlog
+	chroot_sdcard cp -a /root/${BSP}/usr/bin /usr/
+	chroot_sdcard cp -a /root/${BSP}/usr/lib/armbian /usr/lib/
+	chroot_sdcard rm -rf ${BSP}*.deb /root/${BSP}
+	# sans systemctl version of armbian-ram-logging
 	cat <<- EOF > "${SDCARD}"/etc/cron.daily/armbian-ram-logging
 		#!/bin/sh
 		# Only run on systems where logrotate is a cron job
@@ -514,6 +524,9 @@ function armvuan_final_tweaks() {
 		case "\$1" in
 		start)
 		    /usr/lib/armbian/armbian-hardware-optimization start
+		    # tweaks for armbianmonitor:
+		    . /usr/bin/armbian/armbian-hardware-monitor
+		    prepare_temp_monitoring
 		    ;;
 		*)
 		    ;;

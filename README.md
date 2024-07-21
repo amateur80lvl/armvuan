@@ -25,6 +25,8 @@ The build environment must have the following packages installed
 * debootstrap: messy thing, needs to be installed; TODO: check if need to clone from devuan git
 * fdisk
 * kpartx
+* linux-base
+* parallel
 * parted
 * qemu-user-static
 * rsync
