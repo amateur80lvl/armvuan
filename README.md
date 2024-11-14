@@ -96,3 +96,5 @@ lxc.cgroup.devices.allow = b 7:* rwm
 lxc.cgroup.devices.allow = b 259:* rwm
 lxc.mount.entry = /dev dev none bind 0 0
 ```
+
+You'll probably need this patch https://github.com/armbian/build/issues/7430
