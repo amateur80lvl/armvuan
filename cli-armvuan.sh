@@ -49,7 +49,7 @@ iw,libc-l10n,locales,lsb-release,netbase,procps,tzdata,udev,eudev,u-boot-tools,z
 
 DISTRO_INCLUDE=bsdextrautils,cpufrequtils,cryptsetup,chrony,dosfstools,ethtool,fdisk,findutils,less,\
 ifupdown,inetutils-ping,logrotate,lsof,man-db,mmc-utils,mtd-utils,openssh-server,openssh-sftp-server,\
-parted,psutils,rsync,rsyslog,screen,sysfsutils,tmux,usbutils,wireless-tools,wpasupplicant
+parted,psmisc,psutils,rsync,rsyslog,screen,sysfsutils,tmux,usbutils,wireless-tools,wpasupplicant
 
 
 DEBOOTSTRAP_INCLUDE=${FLAVOR_INCLUDE},${DISTRO_INCLUDE},${REQUIRED_PACKAGES}
