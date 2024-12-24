@@ -47,8 +47,9 @@ FLAVOR_EXCLUDE=sysvinit-core
 REQUIRED_PACKAGES=apt-utils,bc,console-setup,cron,dialog,fping,initramfs-tools-core,initramfs-tools,\
 iw,libc-l10n,locales,lsb-release,netbase,procps,tzdata,udev,eudev,u-boot-tools,zstd
 
-DISTRO_INCLUDE=bsdextrautils,cpufrequtils,cryptsetup,chrony,dosfstools,ethtool,fdisk,findutils,less,\
-ifupdown,inetutils-ping,logrotate,lsof,man-db,mmc-utils,mtd-utils,openssh-server,openssh-sftp-server,\
+DISTRO_INCLUDE=bash-completion,bsdextrautils,cpufrequtils,cryptsetup,chrony,dosfstools,ethtool,\
+fdisk,file,findutils,less,ifupdown,iproute2,iputils-ping,iputils-tracepath,logrotate,lsof,\
+man-db,mmc-utils,mtd-utils,netcat-openbsd,net-tools,openssh-server,openssh-sftp-server,\
 parted,psmisc,psutils,rsync,rsyslog,screen,sysfsutils,tmux,usbutils,wireless-tools,wpasupplicant
 
 
