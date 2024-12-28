@@ -205,6 +205,15 @@ function armvuan_tweaks() {
 	EOF
 	chmod +x "${SDCARD}"/usr/bin/systemctl
 
+	# apt tweaks
+	cat <<- EOF > "${SDCARD}/etc/apt/apt.conf.d/01-norecommends"
+		APT::Install-Recommends "0";
+		APT::Install-Suggests "0";
+	EOF
+	cat <<- EOF > "${SDCARD}/etc/apt/apt.conf.d/90-autoclean"
+		DSELECT::Clean "always";
+	EOF
+
 	# from function create_new_rootfs_cache_via_debootstrap:
 
 	# stage: configure language and locales.
